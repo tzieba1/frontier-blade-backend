@@ -1,0 +1,11 @@
+public class PolicyRepository : BaseRepository<Policy>
+{
+    public PolicyRepository(ILogger<PolicyRepository> logger, IMongoClient mongoClient)
+        : base(logger, mongoClient, "FBSDB", "Policies") { }
+
+    public async Task<Policy> GetPolicyByNameAsync(string policyName)
+    {
+        var filter = Builders<Policy>.Filter.Eq(x => x.Name, policyName);
+        return await Collection.Find(filter).FirstOrDefaultAsync();
+    }
+}
